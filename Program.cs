@@ -20,7 +20,15 @@ namespace project
             alergies.Add(allergy,Effect);
         }
     }
-
+    class drugStore{
+        public static Dictionary<string,drug>[] hash_table = new Dictionary<string,drug>[2000];
+        public drugStore(){
+            for (int i = 0; i < 2000; i++)
+            {
+                hash_table[i]=new Dictionary<string,drug>();
+            }
+        }
+    }
             
     }
     class Program
