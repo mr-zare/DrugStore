@@ -21,6 +21,24 @@ namespace project
         }
     }
     class drugStore{
+        public static long polynomialRollingHash(String str)
+        {   
+            // P and M
+            int p = 31;
+            int m = (int)(1e9 + 9);
+            long power_of_p = 1;
+            long hash_val = 0;
+        
+            // Loop to calculate the hash value
+            // by iterating over the elements of String
+            for(int i = 0; i < str.Length; i++)
+            {
+                hash_val = (hash_val + (str[i] -
+                            'a' + 1) * power_of_p) % m;
+                power_of_p = (power_of_p * p) % m;
+            }
+            return hash_val;
+        }
         public static Dictionary<string,drug>[] hash_table = new Dictionary<string,drug>[2000];
         public drugStore(){
             for (int i = 0; i < 2000; i++)
