@@ -20,6 +20,7 @@ namespace project
             alergies.Add(allergy,Effect);
         }
     }
+
     class drugStore{
         public static long polynomialRollingHash(String str)
         {   
@@ -39,6 +40,7 @@ namespace project
             }
             return hash_val;
         }
+
         public static Dictionary<string,drug>[] hash_table = new Dictionary<string,drug>[2000];
         public drugStore(){
             for (int i = 0; i < 2000; i++)
@@ -63,7 +65,6 @@ namespace project
                 hash_table[hash].Add(splited[0],new drug(splited[0],int.Parse(splited[1])));
             }
         }
-
         public void addNewDrug(string name ,  int price){
             
             //add the new drug to our objects
@@ -98,6 +99,7 @@ namespace project
             
             
         }
+
         public void readDrug(string name){
             long hash = polynomialRollingHash(name)%2000;
             if (hash<0)
@@ -125,8 +127,7 @@ namespace project
             }
             
         }
-    }
-            
+        
     }
     class Program
     {
@@ -136,11 +137,27 @@ namespace project
 
             if (flag == 1)
             {
+                drug test = new drug("test",1000);
+                Console.WriteLine(test.name);
+                test.addAlergy("alergy",'+');
+                test.addEffect("drug","effect");
+                Console.WriteLine(test.drugsEffects["drug"]);
+                Console.WriteLine(test.alergies["alergy"]);
+                
+                d.init();
+                
+                long hash = drugStore.polynomialRollingHash("Drug_cwfordbcup"+" ")%2000;
+                if (hash<0)
+                {
+                    hash*=-1;
+                }
+                Console.WriteLine(hash);
+                Console.WriteLine(drugStore.hash_table[hash]["Drug_cwfordbcup"+" "].price);
                 
             }
             else if (flag == 2)
             {
-                
+                d.addNewDrug("test",10000);
             }
             else if (flag == 3)
             {
