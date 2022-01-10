@@ -98,6 +98,33 @@ namespace project
             
             
         }
+        public void readDrug(string name){
+            long hash = polynomialRollingHash(name)%2000;
+            if (hash<0)
+            {
+                hash*=-1;
+            }
+            if(hash_table[hash].ContainsKey(name)==true)
+            {
+                Console.WriteLine(hash_table[hash][name].name+" : "+hash_table[hash][name].price);
+                Console.WriteLine("this drug effects are:");
+                foreach (KeyValuePair<string, string> item in hash_table[hash][name].drugsEffects)
+                {
+                    Console.WriteLine(item.Key,item.Value);
+                }
+                Console.WriteLine("this drug alergies are:");
+                foreach (KeyValuePair<string, char> item in hash_table[hash][name].alergies)
+                {
+                    Console.WriteLine(item.Key,item.Value);
+                }
+            }
+            else
+            {
+                
+                throw new Exception ("the drug is not in the drug store!!");
+            }
+            
+        }
     }
             
     }
