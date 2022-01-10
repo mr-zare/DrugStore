@@ -46,6 +46,23 @@ namespace project
                 hash_table[i]=new Dictionary<string,drug>();
             }
         }
+        public void init(){
+            for (int i = 0; i < 2000; i++)
+            {
+                hash_table[i] = new Dictionary<string,drug>();
+            }
+            string[] lines = System.IO.File.ReadAllLines("drugs.txt");
+            foreach (string line in lines)
+            {
+                string[] splited = line.Split(':');
+                long hash = polynomialRollingHash(splited[0])%2000;
+                if (hash<0)
+                {
+                    hash*=-1;
+                }
+                hash_table[hash].Add(splited[0],new drug(splited[0],int.Parse(splited[1])));
+            }
+        }
     }
             
     }
