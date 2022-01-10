@@ -1,24 +1,45 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace project
 {
+    class drug{
+        public string name;
+        public int price;
+        public Dictionary<string,string> drugsEffects = new Dictionary<string,string>();
+        public Dictionary<string,char> alergies = new Dictionary<string,char>();
+        public drug(string name, int price){
+            this.name = name;
+            this.price = price;
+        }
+        public void addEffect(string drugName , string Effect){
+            drugsEffects.Add(drugName,Effect);
+        }
+        public void addAlergy(string allergy , char Effect){
+            alergies.Add(allergy,Effect);
+        }
+    }
+
+            
+    }
     class Program
     {
-
+        public static drugStore d = new drugStore();
         static void UserActions(int flag)
         {
 
             if (flag == 1)
             {
-
+                
             }
             else if (flag == 2)
             {
-
+                
             }
             else if (flag == 3)
             {
-
+                d.readDrug("test");
             }
             else if (flag == 4)
             {
