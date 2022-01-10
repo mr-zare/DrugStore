@@ -63,6 +63,41 @@ namespace project
                 hash_table[hash].Add(splited[0],new drug(splited[0],int.Parse(splited[1])));
             }
         }
+
+        public void addNewDrug(string name ,  int price){
+            
+            //add the new drug to our objects
+
+            
+            long hash = polynomialRollingHash(name)%2000;
+            if (hash<0)
+            {
+                hash*=-1;
+            }
+
+            if(hash_table[hash].ContainsKey(name)==true)
+            {
+                throw new Exception ("this drug is already exist!! you can not add it again!!");
+            }
+            else
+            {
+                hash_table[hash].Add(name,new drug(name,price));
+                //add the new drug to our dataset
+
+                File.AppendAllText("drugs.txt", name+" : "+price);
+                //some random drugs for this drug effect
+                    
+                
+
+
+                //some random alergy for this drug alergy
+                
+            }
+            
+
+            
+            
+        }
     }
             
     }
