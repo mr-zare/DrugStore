@@ -115,7 +115,6 @@ namespace project
     }
     class drugStore
     {
-        public static List<string> log1 = new List<string>();
         public static double percent = 1;
         public static List<string> random_drug = new List<string>();
         public static List<string> random_disease = new List<string>();
@@ -248,7 +247,7 @@ namespace project
             if (hash_table2[hash].ContainsKey(diseasename) == true)
             {
                 throw new Exception("Bimari mojoode!!nemitooni dobare ezafash koni!!");
-                log1.Add("bimari:" + diseasename + " mojoode!!nemitooni dobare ezafash koni!!");
+                Program.log.Add("bimari:" + diseasename + " mojoode!!nemitooni dobare ezafash koni!!");
             }
             else
             {
@@ -265,11 +264,11 @@ namespace project
                 }
                 hash_table2[hash][diseasename].adddrugeffect(" (" + random_drug[r_d2] + ",-) ");
                 Console.WriteLine("######## Daroohaye tasadofi#######");
-                log1.Add("baraye bimari" + diseasename + "Darooye tasadofie zir baraye in bimari khoob ast: " + random_drug[r_d].ToString());
+                Program.log.Add("baraye bimari" + diseasename + "Darooye tasadofie zir baraye in bimari khoob ast: " + random_drug[r_d].ToString());
                 Console.WriteLine("Darooye tasadofie zir baraye in bimari khoob ast:");
                 Console.WriteLine("     " + random_drug[r_d]);
                 Console.WriteLine("Darooye tasadofie zir baraye in bimari bad ast:");
-                log1.Add("baraye bimari" + diseasename + "Darooye tasadofie zir baraye in bimari bad ast: " + random_drug[r_d2].ToString());
+                Program.log.Add("baraye bimari" + diseasename + "Darooye tasadofie zir baraye in bimari bad ast: " + random_drug[r_d2].ToString());
                 Console.WriteLine("     " + random_drug[r_d2]);
             }
         }
@@ -288,7 +287,7 @@ namespace project
             if (hash_table[hash].ContainsKey(name) == true)
             {
                 throw new Exception("In daroo mojoode!! nemitooni dobare ezafash koni!!");
-                log1.Add("daaroo:" + name + "mojoode");
+                Program.log.Add("daaroo:" + name + "mojoode");
             }
             else
             {
@@ -325,7 +324,7 @@ namespace project
                 Console.WriteLine("2 Darooye random ba effect hayeshan be in daroo ezafe shod:");
                 Console.WriteLine("     " + random_drug[d] + " , " + random_effect[e]);
                 Console.WriteLine("     " + random_drug[d2] + " , " + random_effect[e2]);
-                log1.Add("baraye daroo" + name + "2 Darooye random ba effect hayeshan be in daroo ezafe shod:  "
+                Program.log.Add("baraye daroo" + name + "2 Darooye random ba effect hayeshan be in daroo ezafe shod:  "
                     + random_drug[d] + " , " + random_effect[e] + "va  " + random_drug[d2] + " , " + random_effect[e2]);
 
                 //some random alergy for this drug alergy
@@ -351,7 +350,7 @@ namespace project
                 Console.WriteLine(random_disease[d1] + "  " + " (" + name + ",+) ");
                 Console.WriteLine("In daroo baraye bimarie randome zir mozer ast:");
                 Console.WriteLine(random_disease[d3] + "  " + " (" + name + ",-) ");
-                log1.Add("baraye darooye jadide: " + name + "In daroo baraye bimarie randome zir mofid ast:" + random_disease[d1] + "  " + " (" + name + ",+) "
+                Program.log.Add("baraye darooye jadide: " + name + "In daroo baraye bimarie randome zir mofid ast:" + random_disease[d1] + "  " + " (" + name + ",+) "
                     + "In daroo baraye bimarie randome zir mozer ast:" + random_disease[d3] + "  " + " (" + name + ",-) ");
 
             }
@@ -387,14 +386,14 @@ namespace project
                     outpman += m + " ";
                 }
                 Console.WriteLine();
-                log1.Add("Daroo haii ke roye" + diseasename + "asare mostbat darand:" + outpmos);
-                log1.Add("Daroo haii ke roye" + diseasename + "asare manfi darand:" + outpman);
+                Program.log.Add("Daroo haii ke roye" + diseasename + "asare mostbat darand:" + outpmos);
+                Program.log.Add("Daroo haii ke roye" + diseasename + "asare manfi darand:" + outpman);
             }
             else
             {
 
                 throw new Exception("Bimari dar darookhane mojood nis!!");
-                log1.Add("bimari" + diseasename + "dar darookhane mojoode");
+                Program.log.Add("bimari" + diseasename + "dar darookhane mojoode");
             }
 
         }
@@ -424,7 +423,7 @@ namespace project
                     Console.Write(g + " ");
                     god += g + " ";
                 }
-                log1.Add("bimari " + diseasename + " az liste daroohaye zir be onvane darooye khoob hazf shod:" + god);
+                Program.log.Add("bimari " + diseasename + " az liste daroohaye zir be onvane darooye khoob hazf shod:" + god);
                 Console.WriteLine();
                 Console.WriteLine("In bimari az liste daroohaye zir be onvane darooye bad hazf shod:");
                 foreach (string dr in hash_table2[hash][diseasename].darooman)
@@ -441,7 +440,7 @@ namespace project
                     Console.Write(g + " ");
                     godb += g + " ";
                 }
-                log1.Add("bimari " + diseasename + " az liste daroohaye zir be onvane darooye khoob hazf shod:" + godb);
+                Program.log.Add("bimari " + diseasename + " az liste daroohaye zir be onvane darooye khoob hazf shod:" + godb);
                 Console.WriteLine();
                 hash_table2[hash].Remove(diseasename);
             }
@@ -449,7 +448,7 @@ namespace project
             {
 
                 throw new Exception("Bimari dar darookhane mojood nis!!");
-                log1.Add("bimari  " + diseasename + " dar darookhane mojood nist");
+                Program.log.Add("bimari  " + diseasename + " dar darookhane mojood nist");
             }
 
         }
@@ -472,7 +471,7 @@ namespace project
                     Console.Write(item + " ");
                     gd += item + " ";
                 }
-                log1.Add("darooye " + name + "khoobe baraye:" + gd);
+                Program.log.Add("darooye " + name + "khoobe baraye:" + gd);
                 Console.WriteLine();
                 Console.WriteLine("In daroo bad ast baraye:");
                 foreach (string item in hash_table[hash][name].badfor)
@@ -480,7 +479,7 @@ namespace project
                     Console.Write(item + " ");
                     gdb += item + " ";
                 }
-                log1.Add("darooye " + name + "bade baraye:" + gdb);
+                Program.log.Add("darooye " + name + "bade baraye:" + gdb);
                 Console.WriteLine();
                 Console.WriteLine("Asaraat in daroo hast:");
                 foreach (KeyValuePair<string, string> item in hash_table[hash][name].drugsEffects)
@@ -488,13 +487,13 @@ namespace project
                     Console.WriteLine("[ " + item.Key + " , " + item.Value + " ]");
                     asar += "[ " + item.Key.ToString() + " , " + item.Value.ToString() + " ]" + " ";
                 }
-                log1.Add("asaraat daroo" + name + "hast: " + asar);
+                Program.log.Add("asaraat daroo" + name + "hast: " + asar);
             }
             else
             {
 
                 throw new Exception("Daroo dar darookhane mojood nis!!");
-                log1.Add("daroo  " + name + "dar darookhane mojood nist");
+                Program.log.Add("daroo  " + name + "dar darookhane mojood nist");
             }
 
         }
@@ -526,7 +525,7 @@ namespace project
                     Console.Write(g + " ");
                     gd += g + " ";
                 }
-                log1.Add("baraye darooye hazfi" + drugname + "in daroo az list mosbat baraye bimari haye rooberoo hazfe" + gd);
+                Program.log.Add("baraye darooye hazfi" + drugname + "in daroo az list mosbat baraye bimari haye rooberoo hazfe" + gd);
                 Console.WriteLine();
                 Console.WriteLine("In daroo az liste daroo haye manfi baraye bimari haye zir hazf shod:");
                 foreach (string g in hash_table[hash][drugname].badfor)
@@ -540,7 +539,7 @@ namespace project
                     Console.Write(g + " ");
                     gdb += g + " ";
                 }
-                log1.Add("baraye darooye hazfi" + drugname + "in daroo az list manfi baraye bimari haye rooberoo hazfe" + gdb);
+                Program.log.Add("baraye darooye hazfi" + drugname + "in daroo az list manfi baraye bimari haye rooberoo hazfe" + gdb);
 
                 Console.WriteLine();
                 Console.WriteLine("In daroo az liste effect haye daroohaye zir hazf shod:");
@@ -557,12 +556,12 @@ namespace project
                 }
                 Console.WriteLine();
                 hash_table[hash].Remove(drugname);
-                log1.Add("baraye darooye hazfi" + drugname + "In daroo az liste effect haye daroohaye roberoo hazf shod:" + asar);
+                Program.log.Add("baraye darooye hazfi" + drugname + "In daroo az liste effect haye daroohaye roberoo hazf shod:" + asar);
             }
             else
             {
                 throw new Exception("Daroo dar darookhane nist!!");
-                log1.Add("daroo  " + drugname + "dar darookhane mojood nist");
+                Program.log.Add("daroo  " + drugname + "dar darookhane mojood nist");
             }
         }
     }
@@ -584,7 +583,7 @@ namespace project
                 List<string> drugnames = drugname.Split().ToList();
                 drugname = "darooha noskhe: " + drugname;
                 log.Add(drugname);
-                //d.readDrug(drugnames);
+                //d.tadakhol(drugnames);
 
                 //tadakhole darooii
             }
@@ -601,8 +600,8 @@ namespace project
                 log.Add(drugname);
                 diseasename = "bimariha: " + diseasename;
                 log.Add(diseasename);
-                //d.readDrug(drugnames);
-                //d.readDisease(disease);
+                //d.hasasiatdaroo(drugnames);
+                //d.hasasiatbimari(disease);
                 //tadakhole darooii va bimari
             }
             else if (flag == 4)
@@ -625,9 +624,9 @@ namespace project
                     //afzayesh ya kahesh gheimate daroo ha
                     //!!!voroodi ashari beine -1 ta +1 bayad be tabe dade shavad!!!
                     d.percentprice(percent);
-                    if (percent < -1.0 || percent > 1.0)
+                    if (percent < -1.0)
                     {
-                        throw new Exception("!voroodi ashari beine -1 ta +1 bayad be tabe dade shavad!!!");
+                        throw new Exception("!voroodi ashari beine -1 ta binahat bayad be tabe dade!!!");
                     }
                     string m = "darsad taqir: " + percent.ToString();
                     log.Add(m);
@@ -800,6 +799,8 @@ namespace project
                 Console.WriteLine("6.afzoodan ya hazf az saakhtar daade".PadLeft(47, ' '));
                 Console.WriteLine("7.jost va joo".PadLeft(10, ' '));
                 Console.WriteLine("8.khorooj".PadLeft(8, ' '));
+                Console.WriteLine("9.khorooj va namayesh taqirat".PadLeft(8, ' '));
+
                 try
                 {
 
@@ -815,6 +816,47 @@ namespace project
                     Console.ForegroundColor = ConsoleColor.White;
                     continue;
                 }
+                if (flag == 9)
+                {
+                    for (int i = 0; i < log.Count; i++)
+                    {
+                        Console.WriteLine(log[i]);
+                    }
+
+                    StreamWriter wd = new StreamWriter("drugs.txt");
+                    StreamWriter wb = new StreamWriter("diseases.txt");
+                    StreamWriter wa = new StreamWriter("alergies.txt");
+                    StreamWriter we = new StreamWriter("effects.txt");
+
+                    for (int i = 0; i < 2000; i++)
+                    {
+                        foreach (KeyValuePair<string, drug> line in drugStore.hash_table[i])
+                        {
+                            wd.WriteLine(line.Key.ToString() + " : " + line.Value.price);
+                            foreach (KeyValuePair<string, string> line1 in line.Value.drugsEffects)
+
+                                we.WriteLine(line.Key.ToString() + " : (" + line1.Key.ToString() + "," + line1.Value.ToString() + " ) ;");
+                        }
+                    }
+                    for (int i = 0; i < 500; i++)
+                    {
+                        foreach (KeyValuePair<string, disease> line in drugStore.hash_table2[i])
+                        {
+                            wb.WriteLine(line.Key.ToString());
+                            wa.Write(line.Key.ToString() + " : ");
+                            for (int j = 0; j < line.Value.daroomos.Count; i++)
+                            {
+                                wa.Write("(" + line.Value.daroomos[i] + ") ; ");
+                            }
+                            for (int j = 0; j < line.Value.darooman.Count; i++)
+                            {
+                                wa.Write("(" + line.Value.darooman[i] + ") ; ");
+                            }
+                            wa.WriteLine();
+                        }
+                    }
+                    break;
+                }
                 if (flag == 8) break;
                 try
                 {
@@ -828,7 +870,7 @@ namespace project
                 }
                 try
                 {
-                    if (flag > 8 || flag < 1)
+                    if (flag > 9 || flag < 1)
                     {
                         throw new Exception("voroodi dar mahdoode adad haye qabl entekhab nist");
                     }
