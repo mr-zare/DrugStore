@@ -855,9 +855,52 @@ namespace project
                             wa.WriteLine();
                         }
                     }
+                    wa.Close();
+                    wb.Close();
+                    wd.Close();
+                    we.Close();
                     break;
                 }
-                if (flag == 8) break;
+                if (flag == 8)
+                {
+                    StreamWriter wd = new StreamWriter("drugs.txt");
+                    StreamWriter wb = new StreamWriter("diseases.txt");
+                    StreamWriter wa = new StreamWriter("alergies.txt");
+                    StreamWriter we = new StreamWriter("effects.txt");
+
+                    for (int i = 0; i < 2000; i++)
+                    {
+                        foreach (KeyValuePair<string, drug> line in drugStore.hash_table[i])
+                        {
+                            wd.WriteLine(line.Key.ToString() + " : " + line.Value.price);
+                            foreach (KeyValuePair<string, string> line1 in line.Value.drugsEffects)
+
+                                we.WriteLine(line.Key.ToString() + " : (" + line1.Key.ToString() + "," + line1.Value.ToString() + " ) ;");
+                        }
+                    }
+                    for (int i = 0; i < 500; i++)
+                    {
+                        foreach (KeyValuePair<string, disease> line in drugStore.hash_table2[i])
+                        {
+                            wb.WriteLine(line.Key.ToString());
+                            wa.Write(line.Key.ToString() + " : ");
+                            for (int j = 0; j < line.Value.daroomos.Count; i++)
+                            {
+                                wa.Write("(" + line.Value.daroomos[i] + ") ; ");
+                            }
+                            for (int j = 0; j < line.Value.darooman.Count; i++)
+                            {
+                                wa.Write("(" + line.Value.darooman[i] + ") ; ");
+                            }
+                            wa.WriteLine();
+                        }
+                    }
+                    wa.Close();
+                    wb.Close();
+                    wd.Close();
+                    we.Close();
+                    break;
+                }
                 try
                 {
                     UserActions(flag);
