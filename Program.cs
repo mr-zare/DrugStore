@@ -6,7 +6,7 @@ namespace project
 {
     class disease
     {
-        string name;
+        public string name;
         public List<string> daroomos = new List<string>();
         public List<string> darooman = new List<string>();
         // public Dictionary<string, string> drugsEffects = new Dictionary<string, string>();
@@ -20,6 +20,24 @@ namespace project
         //     //daroo.Add(a);
         //     ///
         // }
+        public void deletefromMOS(string name){
+            for (int i = 0; i < daroomos.Count; i++)
+            {
+                if (daroomos[i]==name)
+                {
+                    daroomos.RemoveAt(i);                    
+                }
+            }
+        }
+        public void deletefromMAN(string name){
+            for (int i = 0; i < darooman.Count; i++)
+            {
+                if (darooman[i]==name)
+                {
+                    darooman.RemoveAt(i);                    
+                }
+            }
+        }
         public void adddrugeffect(string drugef)
         {
             string[] spil = drugef.Split(",");
@@ -71,11 +89,28 @@ namespace project
         // {
         //     alergies.Add(allergy, Effect);
         // }
+        public void deletefromGOOD(string name){
+            for (int i = 0; i < goodfor.Count; i++)
+            {
+                if (goodfor[i]==name)
+                {
+                    goodfor.RemoveAt(i);                    
+                }
+            }
+        }
+        public void deletefromBAD(string name){
+            for (int i = 0; i < badfor.Count; i++)
+            {
+                if (badfor[i]==name)
+                {
+                    badfor.RemoveAt(i);                    
+                }
+            }
+        }
     }
-
-
     class drugStore
     {
+        public static double percent=1;
         public static List<string> random_drug= new List<string>();
         public static List<string> random_disease=new List<string>();
         public static List<string> random_effect = new List<string>();
@@ -212,8 +247,23 @@ namespace project
             {
                 hash_table2[hash].Add(diseasename, new disease(diseasename));
 
-                File.AppendAllText("diseases.txt", diseasename);
                 //add random drugs
+                Random rnd = new Random();
+                int r_d = rnd.Next(1,15);
+                hash_table2[hash][diseasename].adddrugeffect(" ("+random_drug[r_d]+",+) ");
+                int r_d2 = rnd.Next(1,15);
+                while(r_d2==r_d){
+                    r_d2=rnd.Next(1,15);
+                }
+                hash_table2[hash][diseasename].adddrugeffect(" ("+random_drug[r_d2]+",-) ");
+                Console.WriteLine("######## daroohaye tasadofi#######");
+                Console.WriteLine("darooye tasadofie zir baraye in bimari khoob ast:");
+                Console.WriteLine("     "+random_drug[r_d]);
+                Console.WriteLine("darooye tasadofie zir baraye in bimari bad ast:");
+                Console.WriteLine("     "+random_drug[r_d2]);
+
+
+
             }
         }
         public void addNewDrug(string name, int price)
@@ -239,8 +289,8 @@ namespace project
                 //some random drugs for this drug effect
                 Random rnd = new Random();
 
-                int d = rnd.Next(0, 16); // returns random integers >= 0 and < 16
-                int e = rnd.Next(0, 16);
+                int d = rnd.Next(1, 15); // returns random integers >= 0 and < 16
+                int e = rnd.Next(1, 15);
                 long hash_d = polynomialRollingHash(random_drug[d]) % 2000;
                 if (hash_d < 0)
                 {
@@ -249,8 +299,47 @@ namespace project
                 hash_table[hash_d][random_drug[d]].addEffect(name,random_effect[e]);
                 hash_table[hash][name].addEffect(random_drug[d],random_effect[e]);
 
+                int d2 = rnd.Next(1,15);
+                while(d2==d){
+                    d2 = rnd.Next(1,15);
+                }
+                int e2 = rnd.Next(1,15);
+                long hash_d2 = polynomialRollingHash(random_drug[d2]) % 2000;
+                if (hash_d2 < 0)
+                {
+                    hash_d2 *= -1;
+                }
+                hash_table[hash_d2][random_drug[d2]].addEffect(name,random_effect[e2]);
+                hash_table[hash][name].addEffect(random_drug[d2],random_effect[e2]);
+                //write this random to user
+                Console.WriteLine("######## daroohaye tasadofi#######");
+                Console.WriteLine("2 darooye random ba effect hayeshan be in daroo ezafe shod:");
+                Console.WriteLine("     "+random_drug[d]+" , "+random_effect[e]);
+                Console.WriteLine("     "+random_drug[d2]+" , "+random_effect[e2]);
 
                 //some random alergy for this drug alergy
+                int d1 = rnd.Next(1,15);
+                long hash_d1 = polynomialRollingHash(random_disease[d1])%500;
+                if (hash_d1<0)
+                {
+                    hash_d1 *= -1;
+                }
+                hash_table2[hash_d1][random_disease[d1]].adddrugeffect(" ("+name+",+) ");
+                
+                int d3 = rnd.Next(1,15);
+                long hash_d3 = polynomialRollingHash(random_disease[d3])%500;
+                if (hash_d3<0)
+                {
+                    hash_d3 *= -1;
+                }
+                hash_table2[hash_d3][random_disease[d3]].adddrugeffect(" ("+name+",-) ");
+
+                // //write this random alergy to the user
+                Console.WriteLine("######## bimarihaye tasadofi#######");
+                Console.WriteLine("in daroo baraye bimarie randome zir mofid ast:");
+                Console.WriteLine(random_disease[d1]+"  "+" ("+name+",+) ");
+                Console.WriteLine("in daroo baraye bimarie randome zir mozer ast:");
+                Console.WriteLine(random_disease[d3]+"  "+" ("+name+",-) ");
 
             }
         }
@@ -297,8 +386,35 @@ namespace project
             }
             if (hash_table2[hash].ContainsKey(diseasename) == true)
             {
+                Console.WriteLine("in bimari az liste daroohaye zir be onvane darooye khoob hazf shod:");
+                foreach (string dr in hash_table2[hash][diseasename].daroomos){
+                    string[] temp = dr.Split('(');
+                    string[] temp1 = temp[1].Split(',');
+                    string g = temp1[0];
+                    long hash2 = polynomialRollingHash(g) % 2000;
+                    if (hash2 < 0)
+                    {
+                        hash2 *= -1;
+                    }
+                    hash_table[hash2][g].deletefromGOOD(diseasename);
+                    Console.Write(g+" ");
+                }
+                Console.WriteLine();
+                Console.WriteLine("in bimari az liste daroohaye zir be onvane darooye bad hazf shod:");
+                foreach (string dr in hash_table2[hash][diseasename].darooman){
+                    string[] temp = dr.Split('(');
+                    string[] temp1 = temp[1].Split(',');
+                    string g = temp1[0];
+                    long hash2 = polynomialRollingHash(g) % 2000;
+                    if (hash2 < 0)
+                    {
+                        hash2 *= -1;
+                    }
+                    hash_table[hash2][g].deletefromBAD(diseasename);
+                    Console.Write(g+" ");
+                }
+                Console.WriteLine();
                 hash_table2[hash].Remove(diseasename);
-                ///in text?
             }
             else
             {
@@ -316,7 +432,7 @@ namespace project
             }
             if (hash_table[hash].ContainsKey(name) == true)
             {
-                Console.WriteLine(hash_table[hash][name].name + " : " + hash_table[hash][name].price);
+                Console.WriteLine(hash_table[hash][name].name + " : " + (hash_table[hash][name].price)*drugStore.percent);
                 Console.WriteLine("this drug is good for:");
                 foreach (string item in hash_table[hash][name].goodfor)
                 {
@@ -342,9 +458,60 @@ namespace project
             }
 
         }
-        public void percentprice(int per)
+        public void percentprice(double per)
         {
-            ////kamel she
+            percent*=(1+per);
+        }
+        public void deleteDrug(string drugname){
+            long hash = polynomialRollingHash(drugname) % 2000;
+            if (hash < 0)
+            {
+                hash *= -1;
+            }
+            if (hash_table[hash].ContainsKey(drugname) == true)
+            {
+                Console.WriteLine("in daroo az liste daroo haye mosbat baraye bimari haye zir hazf shod:");
+                foreach (string g in hash_table[hash][drugname].goodfor )
+                {
+                    long h2 = polynomialRollingHash(g) % 500;
+                    if (h2 < 0)
+                    {
+                        h2 *= -1;
+                    }
+                    hash_table2[h2][g].deletefromMOS(drugname);
+                    Console.Write(g+" ");
+                }
+                Console.WriteLine();
+                Console.WriteLine("in daroo az liste daroo haye manfi baraye bimari haye zir hazf shod:");
+                foreach (string g in hash_table[hash][drugname].badfor )
+                {
+                    long h3 = polynomialRollingHash(g) % 500;
+                    if (h3 < 0)
+                    {
+                        h3 *= -1;
+                    }
+                    hash_table2[h3][g].deletefromMAN(drugname);
+                    Console.Write(g+" ");
+                }
+                Console.WriteLine();
+                Console.WriteLine("in daroo az liste effect haye daroohaye zir hazf shod:");
+                foreach (KeyValuePair<string,string> e in hash_table[hash][drugname].drugsEffects){
+                    long hash2 = polynomialRollingHash(e.Key) % 2000;
+                    if (hash2 < 0)
+                    {
+                        hash2 *= -1;
+                    }
+                    hash_table[hash2][e.Key].drugsEffects.Remove(drugname);
+                    Console.WriteLine(e.Key+" ");
+                }
+                Console.WriteLine();
+                hash_table[hash].Remove(drugname);
+            }
+            else
+            {
+
+                throw new Exception("the drug is not in the drug store!!");
+            }
         }
     }
     class Program
@@ -371,11 +538,16 @@ namespace project
             else if (flag == 4)
             {
                 //hazine yek noskhe daroo
+                d.adddisease("testdrug");
+                Console.WriteLine("#######3");
+                d.deleteDisease("testdrug");
 
             }
             else if (flag == 5)
             {
-                //afzayesh gheimate daroo ha
+                //afzayesh ya kahesh gheimate daroo ha
+                //!!!voroodi ashari beine -1 ta +1 bayad be tabe dade shavad!!!
+                d.percentprice(0.2);
 
             }
             else if (flag == 6)
