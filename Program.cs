@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 
 namespace project
 {
@@ -180,6 +181,7 @@ namespace project
                 }
                 hash_table[hash].Add(splited[0].Remove(splited[0].Length - 1, 1), new drug(splited[0].Remove(splited[0].Length - 1, 1), int.Parse(splited[1])));
             }
+            
             ///////////////////////////////////////////////////////////////////////////////////
             for (int i = 0; i < 500; i++)
             {
@@ -188,27 +190,36 @@ namespace project
             string[] lines1 = System.IO.File.ReadAllLines("alergies.txt");
             foreach (string line in lines1)
             {
-                string[] splited = line.Split(':');
-                long hash = polynomialRollingHash(splited[0].Remove(splited[0].Length - 1, 1)) % 500;
-                disease a = new disease(splited[0].Remove(splited[0].Length - 1, 1));
-                if (random_dsc < 15)
+                if (line!=" " && line!="\n")
                 {
-                    random_disease.Add(splited[0].Remove(splited[0].Length - 1, 1));
-                    random_dc++;
+                    string[] splited = line.Split(':');
+                    long hash = polynomialRollingHash(splited[0].Remove(splited[0].Length - 1, 1)) % 500;
+                    disease a = new disease(splited[0].Remove(splited[0].Length - 1, 1));
+                    if (random_dsc < 15)
+                    {
+                        random_disease.Add(splited[0].Remove(splited[0].Length - 1, 1));
+                        random_dsc++;
+                    }
+                    if (hash < 0)
+                    {
+                        hash *= -1;
+                    }
+                    string[] splited2 = splited[1].Split(";");
+                    foreach (string s in splited2)
+                    {
+                        if (s!=" "  && s!="\n")
+                        {
+                            a.adddrugeffect(s);
+                        }
+                        
+                        //how hash q?
+                        ///trim q?
+                    }
+                    hash_table2[hash].Add(splited[0].Remove(splited[0].Length - 1, 1), a);
                 }
-                if (hash < 0)
-                {
-                    hash *= -1;
-                }
-                string[] splited2 = splited[1].Split(";");
-                for (int i = 0; i < splited2.Length; i++)
-                {
-                    a.adddrugeffect(splited2[i]);
-                    //how hash q?
-                    ///trim q?
-                }
-                hash_table2[hash].Add(splited[0].Remove(splited[0].Length - 1, 1), a);
+                
             }
+           
             /////////////////////////////////////////////////////// eeffeecctt
             string[] lines2 = System.IO.File.ReadAllLines("effects.txt");
             foreach (string line in lines2)
@@ -223,15 +234,19 @@ namespace project
                 string[] splited2 = splited[1].Split(";");
                 for (int i = 0; i < splited2.Length; i++)
                 {
-                    string[] newstr = splited2[i].Split('(');
-                    string[] newstr1 = newstr[1].Split(')');
-                    string[] final = newstr1[0].Split(',');
-                    hash_table[hash][splited[0].Remove(splited[0].Length - 1, 1)].addEffect(final[0], final[1]);
-                    if (random_ec < 15)
+                    if (splited2[i]!=" ")
                     {
-                        random_effect.Add(final[1]);
-                        random_ec++;
+                        string[] newstr = splited2[i].Split('(');
+                        string[] newstr1 = newstr[1].Split(')');
+                        string[] final = newstr1[0].Split(',');
+                        hash_table[hash][splited[0].Remove(splited[0].Length - 1, 1)].addEffect(final[0], final[1]);
+                        if (random_ec < 15)
+                        {
+                            random_effect.Add(final[1]);
+                            random_ec++;
+                        }
                     }
+                    
                 }
             }
 
@@ -247,7 +262,7 @@ namespace project
             if (hash_table2[hash].ContainsKey(diseasename) == true)
             {
                 throw new Exception("Bimari mojoode!!nemitooni dobare ezafash koni!!");
-                Program.log.Add("bimari:" + diseasename + " mojoode!!nemitooni dobare ezafash koni!!");
+                Program.log.Add("bimari:" + diseasename + " mojoode!!nemitooni dobare ezafash koni!!".ToString());
             }
             else
             {
@@ -286,7 +301,7 @@ namespace project
 
             if (hash_table[hash].ContainsKey(name) == true)
             {
-                throw new Exception("In daroo mojoode!! nemitooni dobare ezafash koni!!");
+                Console.WriteLine("In daroo mojoode!! nemitooni dobare ezafash koni!!");
                 Program.log.Add("daaroo:" + name + "mojoode");
             }
             else
@@ -392,7 +407,7 @@ namespace project
             else
             {
 
-                throw new Exception("Bimari dar darookhane mojood nis!!");
+                Console.WriteLine("Bimari dar darookhane mojood nis!!");
                 Program.log.Add("bimari" + diseasename + "dar darookhane mojoode");
             }
 
@@ -447,7 +462,7 @@ namespace project
             else
             {
 
-                throw new Exception("Bimari dar darookhane mojood nis!!");
+                Console.WriteLine("Bimari dar darookhane mojood nis!!");
                 Program.log.Add("bimari  " + diseasename + " dar darookhane mojood nist");
             }
 
@@ -492,7 +507,7 @@ namespace project
             else
             {
 
-                throw new Exception("Daroo dar darookhane mojood nis!!");
+                Console.WriteLine("Daroo dar darookhane mojood nis!!");
                 Program.log.Add("daroo  " + name + "dar darookhane mojood nist");
             }
 
@@ -560,8 +575,100 @@ namespace project
             }
             else
             {
-                throw new Exception("Daroo dar darookhane nist!!");
+                Console.WriteLine("Daroo dar darookhane nist!!");
                 Program.log.Add("daroo  " + drugname + "dar darookhane mojood nist");
+            }
+        }
+        public static void calcpresc(List<string> drugs)
+        {
+            try
+            {
+                double sum =0;
+                foreach (string drug in drugs)
+                {
+                    long hash = polynomialRollingHash(drug) % 2000;
+                    if (hash < 0)
+                    {
+                        hash *= -1;
+                    }
+                    sum+=(hash_table[hash][drug].price*drugStore.percent);
+                }
+                Console.WriteLine(sum);
+            }
+            catch (System.Exception)
+            {
+                
+                Console.WriteLine("bazi az daroo haye vared shode dar darookhane mojood nabood!!");
+            }
+        }
+        public static bool tadakhol(List<string> drugs)
+        {
+            try
+            {
+                for (int i = 1; i < drugs.Count; i++)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        long hash = polynomialRollingHash(drugs[i]) % 2000;
+                        if (hash < 0)
+                        {
+                            hash *= -1;
+                        }
+                        long hash1 = polynomialRollingHash(drugs[j]) % 2000;
+                        if (hash1 < 0)
+                        {
+                            hash1 *= -1;
+                        }
+                        if (hash_table[hash1][drugs[j]].drugsEffects.ContainsKey(drugs[i]) == true)
+                        {
+                            //Console.WriteLine("tadakhol yaft shod");
+                            return false;
+                        }
+                        
+                    }
+                    
+                }
+                //Console.WriteLine("tadakhol yaft nashod");
+                return true;
+            }
+            catch (System.Exception)
+            {
+                
+                Console.WriteLine("bazi az daroo ha dar daroo khane mojood nabood!!");
+            }
+            return true;
+            
+        }
+        public static void hasasiatbimari(List<string> drugs, List<string> disease)
+        {
+            bool c = drugStore.tadakhol(drugs);
+            if (c == false)
+            {
+                Console.WriteLine("beine daroo ha tadakhol vojood darad!");
+            }
+            else
+            {
+                for (int i = 0; i < drugs.Count; i++)
+                {
+                    foreach( string bimari in disease )
+                    {
+                        long hash = polynomialRollingHash(drugs[i]) % 2000;
+                        if (hash < 0)
+                        {
+                            hash *= -1;
+                        }
+                        for (int k = 0; k < hash_table[hash][drugs[i]].badfor.Count; k++)
+                        {
+                            if (hash_table[hash][drugs[i]].badfor[k]==bimari)
+                            {
+                                Console.WriteLine("bazi az daroo haye noskhe baraye bazi az bimari haye fard bad ast!!");
+                                return;
+                            }
+                        }
+                        
+                    }
+                }
+                Console.WriteLine("hich tadakholi yaft nashod");
             }
         }
     }
@@ -574,16 +681,44 @@ namespace project
 
             if (flag == 1)
             {
+                var timer = new Stopwatch();
+                timer.Start();
                 d.init();
+                timer.Stop();
+
+                TimeSpan timeTaken = timer.Elapsed;
+                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                Console.WriteLine(foo);
             }
             else if (flag == 2)
             {
-                Console.WriteLine("nam e daroo ha roo dar yek hat va ba fasele ba ham vared konid:");
+                Console.WriteLine("nam e daroo ha ra dar yek khat va ba fasele ba ham vared konid:");
                 string drugname = Console.ReadLine();
-                List<string> drugnames = drugname.Split().ToList();
+                string[] t = drugname.Split(" ");
+                List<string> drugnames = new List<string>();
+                foreach(string d in t)
+                {
+                    drugnames.Add(d);
+                }
+                var timer = new Stopwatch();
+                timer.Start();
+                bool c = drugStore.tadakhol(drugnames);
+                if(c == true)
+                {
+                    Console.WriteLine("tadakhol yaft nashod");
+                }
+                else
+                {
+                    Console.WriteLine("tadakhol yaft shod");
+                }
+                timer.Stop();
+
+                TimeSpan timeTaken = timer.Elapsed;
+                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                Console.WriteLine(foo);
                 drugname = "darooha noskhe: " + drugname;
                 log.Add(drugname);
-                //d.tadakhol(drugnames);
+                
 
                 //tadakhole darooii
             }
@@ -591,17 +726,34 @@ namespace project
             {
                 Console.WriteLine("nam e daroo ha roo dar yek hat va ba fasele ba ham vared konid:");
                 string drugname = Console.ReadLine();
-
+                string[] t = drugname.Split(" ");
+                List<string> drugnames = new List<string>();
+                foreach(string d in t)
+                {
+                    drugnames.Add(d);
+                }
                 Console.WriteLine("nam e bimari ha roo dar yek hat va ba fasele ba ham vared konid:");
                 string diseasename = Console.ReadLine();
-                List<string> drugnames = drugname.Split().ToList();
-                List<string> disease = diseasename.Split().ToList();
+                string[] t1 = diseasename.Split(" ");
+                List<string> diseasenames = new List<string>();
+                foreach(string d in t1)
+                {
+                    diseasenames.Add(d);
+                }
+                var timer = new Stopwatch();
+                timer.Start();
+                drugStore.hasasiatbimari(drugnames, diseasenames);
+                timer.Stop();
+
+                TimeSpan timeTaken = timer.Elapsed;
+                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                Console.WriteLine(foo);
                 drugname = "darooha noskhe: " + drugname;
                 log.Add(drugname);
                 diseasename = "bimariha: " + diseasename;
                 log.Add(diseasename);
                 //d.hasasiatdaroo(drugnames);
-                //d.hasasiatbimari(disease);
+                //
                 //tadakhole darooii va bimari
             }
             else if (flag == 4)
@@ -609,8 +761,20 @@ namespace project
                 //hazine yek noskhe daroo
                 Console.WriteLine("nam e daroo ha ye noskhe ro ke qeimatesh ro mikhay roo dar yek hat va ba fasele ba ham vared konid:");
                 string drugname = Console.ReadLine();
-                List<string> drugnames = drugname.Split().ToList();
-                //d.calcpresc(drugnames);
+                string[] t = drugname.Split(" ");
+                List<string> drugnames = new List<string>();
+                foreach(string d in t)
+                {
+                    drugnames.Add(d);
+                }
+                var timer = new Stopwatch();
+                timer.Start();
+                drugStore.calcpresc(drugnames);
+                timer.Stop();
+
+                TimeSpan timeTaken = timer.Elapsed;
+                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                Console.WriteLine(foo);
                 drugname = "darooha noskhe baraye qeimat: " + drugname;
                 log.Add(drugname);
 
@@ -623,11 +787,19 @@ namespace project
                     double percent = double.Parse(Console.ReadLine());
                     //afzayesh ya kahesh gheimate daroo ha
                     //!!!voroodi ashari beine -1 ta +1 bayad be tabe dade shavad!!!
-                    d.percentprice(percent);
                     if (percent < -1.0)
                     {
                         throw new Exception("!voroodi ashari beine -1 ta binahat bayad be tabe dade!!!");
                     }
+                    var timer = new Stopwatch();
+                    timer.Start();
+                    d.percentprice(percent);
+                    timer.Stop();
+
+                    TimeSpan timeTaken = timer.Elapsed;
+                    string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                    Console.WriteLine(foo);
+                    
                     string m = "darsad taqir: " + percent.ToString();
                     log.Add(m);
                 }
@@ -657,7 +829,14 @@ namespace project
                             {
                                 Console.WriteLine("nam e daroo baraye hazf:");
                                 string name = Console.ReadLine();
+                                var timer = new Stopwatch();
+                                timer.Start();
                                 d.deleteDrug(name);
+                                timer.Stop();
+
+                                TimeSpan timeTaken = timer.Elapsed;
+                                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                                Console.WriteLine(foo);
                                 name = "nam e daroo baraye hazf: " + name;
                                 log.Add(name);
                             }
@@ -665,15 +844,22 @@ namespace project
                             {
                                 try
                                 {
-                                    Console.WriteLine("nam e daroo baraye ezafe:");
+                                    Console.WriteLine("nam e daroo va qeimat ra baraye ezafe shodan ba fasele vared konid:");
                                     string name = Console.ReadLine();
-                                    string[] names = name.Split();
+                                    string[] names = name.Split(' ');
                                     int prices = int.Parse(names[1]);
-                                    d.addNewDrug(name, prices);
-                                    name = "nam e daroo baraye ezafe va qeimat:" + name + prices.ToString();
+                                    var timer = new Stopwatch();
+                                    timer.Start();
+                                    d.addNewDrug(names[0], prices);
+                                    timer.Stop();
+
+                                    TimeSpan timeTaken = timer.Elapsed;
+                                    string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                                    Console.WriteLine(foo);
+                                    name = "nam e daroo baraye ezafe va qeimat:" + names[0] + prices.ToString();
                                     log.Add(name);
                                 }
-                                catch (System.Exception)
+                                catch (Exception ex)
                                 {
                                     Console.WriteLine("voroodi ra dorost vared konid!!!");
                                 }
@@ -696,7 +882,14 @@ namespace project
                             {
                                 Console.WriteLine("nam e bimari baraye hazf:");
                                 string name = Console.ReadLine();
+                                var timer = new Stopwatch();
+                                timer.Start();
                                 d.deleteDisease(name);
+                                timer.Stop();
+
+                                TimeSpan timeTaken = timer.Elapsed;
+                                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                                Console.WriteLine(foo);
                                 name = "nam e daroo baraye hazf:" + name;
                                 log.Add(name);
                             }
@@ -704,7 +897,14 @@ namespace project
                             {
                                 Console.WriteLine("nam e bimari baraye ezafe:");
                                 string name = Console.ReadLine();
+                                var timer = new Stopwatch();
+                                timer.Start();
                                 d.adddisease(name);
+                                timer.Stop();
+
+                                TimeSpan timeTaken = timer.Elapsed;
+                                string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                                Console.WriteLine(foo);
                                 name = "nam e daroo baraye ezafe:" + name;
                                 log.Add(name);
                             }
@@ -748,16 +948,32 @@ namespace project
                     }
                     if (option == 1)
                     {
+                        Console.WriteLine("nam e daroo ra vared konid:");
                         string drug_name = Console.ReadLine();
+                        var timer = new Stopwatch();
+                        timer.Start();
                         d.readDrug(drug_name);
+                        timer.Stop();
+
+                        TimeSpan timeTaken = timer.Elapsed;
+                        string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                        Console.WriteLine(foo);
                         drug_name = "nam e daroo jost va jooyi: " + drug_name;
                         log.Add(drug_name);
                     }
                     else if (option == 2)
                     {
+                        Console.WriteLine("nam e bimari ra vared konid:");
                         string disease_name = Console.ReadLine();
+                        var timer = new Stopwatch();
+                        timer.Start();
                         d.readDisease(disease_name);
-                        disease_name = "nam e disease jost va jooyi: " + disease_name;
+                        timer.Stop();
+
+                        TimeSpan timeTaken = timer.Elapsed;
+                        string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                        Console.WriteLine(foo);
+                        disease_name = "nam e bimari jost va jooyi: " + disease_name;
                         log.Add(disease_name);
                     }
                     else if (option == 3)
@@ -777,6 +993,69 @@ namespace project
             {
                 throw new Exception("Voroodi namoatabare!! voroodi dar mahdoode dorost nist!!");
             }
+        }
+        public static void save_data(){
+            StreamWriter wd = new StreamWriter("drugs.txt");
+            StreamWriter wb = new StreamWriter("diseases.txt");
+            StreamWriter wa = new StreamWriter("alergies.txt");
+            StreamWriter we = new StreamWriter("effects.txt");
+
+            for (int i = 0; i < 2000; i++)
+            {
+                foreach (KeyValuePair<string, drug> line in drugStore.hash_table[i])
+                {
+                    wd.WriteLine(line.Key.ToString() + " : " + line.Value.price*drugStore.percent);
+                    if (line.Value.drugsEffects.Count!=0)
+                    {
+                        we.Write(line.Key+" : ");
+                        foreach (KeyValuePair<string, string> line1 in line.Value.drugsEffects)
+                        {
+                            we.Write("("+line1.Key + "," + line1.Value + ") ; ");
+                        }  
+                        we.WriteLine();
+                    }
+                    
+                                        
+                }
+                
+            }
+            for (int i = 0; i < 500; i++)
+            {
+                foreach (KeyValuePair<string, disease> line in drugStore.hash_table2[i])
+                {
+                    string add="";
+                    wb.WriteLine(line.Key.ToString());
+                    add+=(line.Key.ToString() + " :");
+                    foreach(string s in line.Value.daroomos)
+                    {
+                        string[] sp = s.Split(",");
+                        if (sp[1].Contains(" ")==false)
+                        {
+                            add+=(s + " ;");
+                        } 
+                        else{add+=(s + ";");}
+                    }
+                    foreach(string s in line.Value.darooman)
+                    {
+                        string[] sp = s.Split(",");
+                        if (sp[1].Contains(" ")==false)
+                        {
+                            add+=(s + " ;");
+                        } 
+                        else{add+=(s + ";");}
+                    }
+                    
+                    for (int k = 0; k < add.Length-2; k++)
+                    {
+                        wa.Write(add[k]);
+                    }
+                    wa.WriteLine();
+                }
+            }
+            wa.Close();
+            wb.Close();
+            wd.Close();
+            we.Close();
         }
         static void Main(string[] args)
         {
@@ -818,87 +1097,30 @@ namespace project
                 }
                 if (flag == 9)
                 {
-                    for (int i = 0; i < log.Count; i++)
+                    foreach (string item in log)
                     {
-                        Console.WriteLine(log[i]);
+                        Console.WriteLine(item);
                     }
+                    var timer = new Stopwatch();
+                    timer.Start();
+                    save_data();
+                    timer.Stop();
 
-                    StreamWriter wd = new StreamWriter("drugs.txt");
-                    StreamWriter wb = new StreamWriter("diseases.txt");
-                    StreamWriter wa = new StreamWriter("alergies.txt");
-                    StreamWriter we = new StreamWriter("effects.txt");
-
-                    for (int i = 0; i < 2000; i++)
-                    {
-                        foreach (KeyValuePair<string, drug> line in drugStore.hash_table[i])
-                        {
-                            wd.WriteLine(line.Key.ToString() + " : " + line.Value.price);
-                            foreach (KeyValuePair<string, string> line1 in line.Value.drugsEffects)
-
-                                we.WriteLine(line.Key.ToString() + " : (" + line1.Key.ToString() + "," + line1.Value.ToString() + " ) ;");
-                        }
-                    }
-                    for (int i = 0; i < 500; i++)
-                    {
-                        foreach (KeyValuePair<string, disease> line in drugStore.hash_table2[i])
-                        {
-                            wb.WriteLine(line.Key.ToString());
-                            wa.Write(line.Key.ToString() + " : ");
-                            for (int j = 0; j < line.Value.daroomos.Count; i++)
-                            {
-                                wa.Write("(" + line.Value.daroomos[i] + ") ; ");
-                            }
-                            for (int j = 0; j < line.Value.darooman.Count; i++)
-                            {
-                                wa.Write("(" + line.Value.darooman[i] + ") ; ");
-                            }
-                            wa.WriteLine();
-                        }
-                    }
-                    wa.Close();
-                    wb.Close();
-                    wd.Close();
-                    we.Close();
+                    TimeSpan timeTaken = timer.Elapsed;
+                    string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                    Console.WriteLine(foo);
                     break;
                 }
                 if (flag == 8)
                 {
-                    StreamWriter wd = new StreamWriter("drugs.txt");
-                    StreamWriter wb = new StreamWriter("diseases.txt");
-                    StreamWriter wa = new StreamWriter("alergies.txt");
-                    StreamWriter we = new StreamWriter("effects.txt");
+                    var timer = new Stopwatch();
+                    timer.Start();
+                    save_data();
+                    timer.Stop();
 
-                    for (int i = 0; i < 2000; i++)
-                    {
-                        foreach (KeyValuePair<string, drug> line in drugStore.hash_table[i])
-                        {
-                            wd.WriteLine(line.Key.ToString() + " : " + line.Value.price);
-                            foreach (KeyValuePair<string, string> line1 in line.Value.drugsEffects)
-
-                                we.WriteLine(line.Key.ToString() + " : (" + line1.Key.ToString() + "," + line1.Value.ToString() + " ) ;");
-                        }
-                    }
-                    for (int i = 0; i < 500; i++)
-                    {
-                        foreach (KeyValuePair<string, disease> line in drugStore.hash_table2[i])
-                        {
-                            wb.WriteLine(line.Key.ToString());
-                            wa.Write(line.Key.ToString() + " : ");
-                            for (int j = 0; j < line.Value.daroomos.Count; i++)
-                            {
-                                wa.Write("(" + line.Value.daroomos[i] + ") ; ");
-                            }
-                            for (int j = 0; j < line.Value.darooman.Count; i++)
-                            {
-                                wa.Write("(" + line.Value.darooman[i] + ") ; ");
-                            }
-                            wa.WriteLine();
-                        }
-                    }
-                    wa.Close();
-                    wb.Close();
-                    wd.Close();
-                    we.Close();
+                    TimeSpan timeTaken = timer.Elapsed;
+                    string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.ffffff"); 
+                    Console.WriteLine(foo);
                     break;
                 }
                 try
