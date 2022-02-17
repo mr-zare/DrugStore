@@ -940,9 +940,9 @@ namespace project
                     try
                     {
                         Console.WriteLine("Gozine mored nazar khod ra vared konid:".PadLeft(27, ' '));
-                        Console.WriteLine("1.Jost va jooye daroo".PadLeft(22, ' '));
-                        Console.WriteLine("2.Jost va jooye bimari".PadLeft(23, ' '));
-                        Console.WriteLine("3.Baazgasht be menu".PadLeft(22, ' '));
+                        Console.WriteLine("1.Jost va jooye daroo");
+                        Console.WriteLine("2.Jost va jooye bimari");
+                        Console.WriteLine("3.Baazgasht be menu");
                         option = int.Parse(Console.ReadLine());
                         Console.Clear();
                     }
@@ -1080,15 +1080,15 @@ namespace project
             {
                 Console.WriteLine();
                 Console.WriteLine("Gozine mored nazar khod ra vared konid:".PadLeft(27, ' '));
-                Console.WriteLine("1.Khandane file haye data".PadLeft(22, ' '));
-                Console.WriteLine("2.Vojood ya adam vojood tadakholat darooii dar yek darooye tajvizi".PadLeft(67, ' '));
-                Console.WriteLine("3.vojood ya adam vojood hasaasiat darooii ra dar noskhe ba bimari erjaii arzyabi konid".PadLeft(93, ' '));
-                Console.WriteLine("4.mohasebe qeimat daroohaye tajvizi".PadLeft(47, ' '));
-                Console.WriteLine("5.taqiire qeimat darooha".PadLeft(26, ' '));
-                Console.WriteLine("6.afzoodan ya hazf az saakhtar daade".PadLeft(47, ' '));
-                Console.WriteLine("7.jost va joo".PadLeft(10, ' '));
-                Console.WriteLine("8.khorooj".PadLeft(8, ' '));
-                Console.WriteLine("9.khorooj va namayesh taqirat".PadLeft(8, ' '));
+                Console.WriteLine("1.Khandane file haye data".PadLeft(30, ' '));
+                Console.WriteLine("2.Vojood ya adam vojood tadakholat darooii dar yek darooye tajvizi".PadLeft(71, ' '));
+                Console.WriteLine("3.vojood ya adam vojood hasaasiat darooii ra dar noskhe ba bimari erjaii arzyabi konid".PadLeft(91, ' '));
+                Console.WriteLine("4.mohasebe qeimat daroohaye tajvizi".PadLeft(40, ' '));
+                Console.WriteLine("5.taqiire qeimat darooha".PadLeft(29, ' '));
+                Console.WriteLine("6.afzoodan ya hazf az saakhtar daade".PadLeft(41, ' '));
+                Console.WriteLine("7.jost va joo".PadLeft(18, ' '));
+                Console.WriteLine("8.khorooj".PadLeft(14, ' '));
+                Console.WriteLine("9.khorooj va namayesh taqirat".PadLeft(34, ' '));
 
                 try
                 {
