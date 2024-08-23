@@ -11,17 +11,11 @@ namespace project
         public string name;
         public List<string> daroomos = new List<string>();
         public List<string> darooman = new List<string>();
-        // public Dictionary<string, string> drugsEffects = new Dictionary<string, string>();
-        // public Dictionary<string, char> alergies = new Dictionary<string, char>();
         public disease(string name)
         {
             this.name = name;
         }
-        // public void adddrug(drug a)
-        // {
-        //     //daroo.Add(a);
-        //     ///
-        // }
+
         public void deletefromMOS(string name)
         {
             for (int i = 0; i < daroomos.Count; i++)
@@ -77,7 +71,6 @@ namespace project
         public string name;
         public int price;
         public Dictionary<string, string> drugsEffects = new Dictionary<string, string>();
-        // public Dictionary<string, char> alergies = new Dictionary<string, char>();
         public List<string> goodfor = new List<string>();
         public List<string> badfor = new List<string>();
         public drug(string name, int price)
@@ -139,9 +132,7 @@ namespace project
             return hash_val;
         }
         public static Dictionary<string, disease>[] hash_table2 = new Dictionary<string, disease>[500];
-        /// <summary>
-        /// hi
-        /// </summary>
+
         public static Dictionary<string, drug>[] hash_table = new Dictionary<string, drug>[2000];
         public drugStore()
         {
@@ -149,7 +140,7 @@ namespace project
             {
                 hash_table[i] = new Dictionary<string, drug>();
             }
-            ////////////////////////////////////////////////////////
+
             for (int i = 0; i < 500; i++)
             {
                 hash_table2[i] = new Dictionary<string, disease>();
@@ -182,7 +173,6 @@ namespace project
                 hash_table[hash].Add(splited[0].Remove(splited[0].Length - 1, 1), new drug(splited[0].Remove(splited[0].Length - 1, 1), int.Parse(splited[1])));
             }
 
-            ///////////////////////////////////////////////////////////////////////////////////
             for (int i = 0; i < 500; i++)
             {
                 hash_table2[i] = new Dictionary<string, disease>();
@@ -212,15 +202,14 @@ namespace project
                             a.adddrugeffect(s);
                         }
 
-                        //how hash q?
-                        ///trim q?
+
                     }
                     hash_table2[hash].Add(splited[0].Remove(splited[0].Length - 1, 1), a);
                 }
 
             }
 
-            /////////////////////////////////////////////////////// eeffeecctt
+            ////////////////////////////////////////// effect
             string[] lines2 = System.IO.File.ReadAllLines("effects.txt");
             foreach (string line in lines2)
             {
@@ -379,15 +368,10 @@ namespace project
             }
             if (hash_table2[hash].ContainsKey(diseasename) == true)
             {
-                //Console.Write(hash_table2[hash][diseasename].alergies + " : " + hash_table2[hash][diseasename].drugsEffects);
-
                 string outpmos = "";
                 string outpman = "";
                 Console.WriteLine("Daroo haii ke roye in bimari asare mostbat darand:");
-                // foreach (KeyValuePair<string, string> item in hash_table2[hash][diseasename].drugsEffects)
-                // {
-                //     Console.WriteLine(item.Key, item.Value);
-                // }
+
                 foreach (string m in hash_table2[hash][diseasename].daroomos)
                 {
                     Console.Write(m + " ");
@@ -625,14 +609,12 @@ namespace project
                         }
                         if (hash_table[hash1][drugs[j]].drugsEffects.ContainsKey(drugs[i]) == true)
                         {
-                            //Console.WriteLine("tadakhol yaft shod");
                             return false;
                         }
 
                     }
 
                 }
-                //Console.WriteLine("tadakhol yaft nashod");
                 return true;
             }
             catch (System.Exception)
@@ -728,8 +710,6 @@ namespace project
                 drugname = "darooha noskhe: " + drugname;
                 log.Add(drugname);
 
-
-                //tadakhole darooii
             }
             else if (flag == 3)
             {
@@ -761,13 +741,10 @@ namespace project
                 log.Add(drugname);
                 diseasename = "bimariha: " + diseasename;
                 log.Add(diseasename);
-                //d.hasasiatdaroo(drugnames);
-                //
-                //tadakhole darooii va bimari
+
             }
             else if (flag == 4)
             {
-                //hazine yek noskhe daroo
                 Console.WriteLine("nam e daroo ha ye noskhe ro ke qeimatesh ro mikhay roo dar yek hat va ba fasele ba ham vared konid:");
                 string drugname = Console.ReadLine();
                 string[] t = drugname.Split(" ");
@@ -794,8 +771,7 @@ namespace project
                 try
                 {
                     double percent = double.Parse(Console.ReadLine());
-                    //afzayesh ya kahesh gheimate daroo ha
-                    //!!!voroodi ashari beine -1 ta +1 bayad be tabe dade shavad!!!
+
                     if (percent < -1.0)
                     {
                         throw new Exception("!voroodi ashari beine -1 ta binahat bayad be tabe dade!!!");
@@ -1005,10 +981,10 @@ namespace project
         }
         public static void save_data()
         {
-            StreamWriter wd = new StreamWriter("drugs.txt");
-            StreamWriter wb = new StreamWriter("diseases.txt");
-            StreamWriter wa = new StreamWriter("alergies.txt");
-            StreamWriter we = new StreamWriter("effects.txt");
+            StreamWriter wd = new StreamWriter("Dataset/drugs.txt");
+            StreamWriter wb = new StreamWriter("Dataset/diseases.txt");
+            StreamWriter wa = new StreamWriter("Dataset/alergies.txt");
+            StreamWriter we = new StreamWriter("Dataset/effects.txt");
 
             for (int i = 0; i < 2000; i++)
             {
